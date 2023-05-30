@@ -5,6 +5,8 @@ const event = {
         lat: () => 3.0,
         lng: () => 3.0,
     },
+    getMarkers: () => [],
+    getCenter: () => vi.fn(),
 };
 
 class MVCClass {
@@ -54,6 +56,7 @@ const googleMapsClass = {
             super();
             this.getPosition = vi.fn(() => event.latLng);
             this.setPosition = vi.fn();
+            this.setOpacity = vi.fn();
         }
     },
 
@@ -85,6 +88,7 @@ const googleMapsClass = {
             this.setContent = vi.fn();
             this.open = vi.fn();
             this.close = vi.fn();
+            this.setPosition = vi.fn();
         }
     },
 
@@ -108,8 +112,8 @@ const googleMapsClass = {
 
     Geocoder: class Geocoder {
         constructor() {
-            this.geocode = vi.fn((_, calback) => {
-                calback([
+            this.geocode = vi.fn((_, callback) => {
+                callback([
                     {
                         address_components: [
                             {
@@ -218,6 +222,7 @@ const googleMapsObject = {
         ...MVCObject,
         getPosition: vi.fn(() => event.latLng),
         setPosition: vi.fn(),
+        setOpacity: vi.fn(),
     },
     Circle: {
         ...MVCObject,
@@ -237,6 +242,7 @@ const googleMapsObject = {
         setContent: vi.fn(),
         open: vi.fn(),
         close: vi.fn(),
+        setPosition: vi.fn(),
     },
 };
 

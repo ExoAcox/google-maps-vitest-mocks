@@ -1,6 +1,6 @@
 {
     "name": "@exoacox/google-maps-vitest-mocks",
-    "version": "1.3.5",
+    "version": "1.3.6",
     "main": "src/index.js",
     "type": "module",
     "devDependencies": {
