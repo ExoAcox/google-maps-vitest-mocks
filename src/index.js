@@ -5,8 +5,6 @@ const event = {
         lat: () => 3.0,
         lng: () => 3.0,
     },
-    getMarkers: () => [],
-    getCenter: () => vi.fn(),
 };
 
 class MVCClass {
@@ -41,13 +39,6 @@ const googleMapsClass = {
             this.panTo = vi.fn();
             this.setMapTypeId = vi.fn();
             this.setCenter = vi.fn();
-            this.fitBounds = vi.fn();
-            this.getBounds = vi.fn(() => {
-                return {
-                    getNorthEast: vi.fn(() => event.latLng),
-                    getSouthWest: vi.fn(() => event.latLng),
-                };
-            });
         }
     },
 
@@ -56,7 +47,6 @@ const googleMapsClass = {
             super();
             this.getPosition = vi.fn(() => event.latLng);
             this.setPosition = vi.fn();
-            this.setOpacity = vi.fn();
         }
     },
 
@@ -88,43 +78,19 @@ const googleMapsClass = {
             this.setContent = vi.fn();
             this.open = vi.fn();
             this.close = vi.fn();
-            this.setPosition = vi.fn();
         }
     },
 
     LatLng: class LatLng {
-        constructor() {}
+        constructor() { }
     },
 
     Point: class Point {
-        constructor() {}
+        constructor() { }
     },
 
     Size: class Size {
-        constructor() {}
-    },
-
-    LatLngBounds: class LatLngBounds {
-        constructor() {
-            this.extend = vi.fn();
-        }
-    },
-
-    Geocoder: class Geocoder {
-        constructor() {
-            this.geocode = vi.fn((_, callback) => {
-                callback([
-                    {
-                        address_components: [
-                            {
-                                types: ["route"],
-                                short_name: "street name",
-                            },
-                        ],
-                    },
-                ]);
-            });
-        }
+        constructor() { }
     },
 
     DirectionsService: class DirectionsService {
@@ -138,7 +104,7 @@ const googleMapsClass = {
     DirectionsRenderer: class DirectionsRenderer {
         constructor() {
             this.setMap = vi.fn();
-            this.getMap = vi.fn(() => {});
+            this.getMap = vi.fn(() => { });
             this.setDirections = vi.fn();
         }
     },
@@ -170,9 +136,52 @@ const googleMapsClass = {
     },
 
     event: {
-        addListener: vi.fn((_, __, callback) => callback(event)),
-        removeListener: vi.fn(),
+        addListener: vi.fn((instance, eventName, callback) => callback(event))
     },
+
+    Geocoder: class Geocoder {
+        constructor() {
+            this.geocode = vi.fn((_, calback) => {
+                calback([
+                    {
+                        address_components: [
+                            {
+                                types: ['route'],
+                                short_name: 'street name'
+                            }
+                        ]
+                    }
+                ])
+            })
+        }
+    },
+
+    drawing: {
+        DrawingManager: class DrawingManager extends MVCClass {
+            constructor() {
+                super();
+                this.polygonOptions = {
+                    editable: true,
+                    draggable: true,
+                    strokeWeight: 5,
+                    fillOpacity: 0.5,
+                    fillColor: 'red',
+                    strokeColor: 'red',
+                    clickable: true,
+                }
+                this.setDrawingMode = vi.fn();
+                this.addListener = vi.fn((_, calback) => calback({
+                    overlay: {
+                        getPath: vi.fn(() => {
+                            return {
+                                getArray: vi.fn(() => [event.latLng])
+                            }
+                        })
+                    }
+                }))
+            }
+        }
+    }
 };
 
 export const googleMaps = () => {
@@ -208,21 +217,28 @@ const googleMapsObject = {
         getZoom: vi.fn(() => 1),
         setZoom: vi.fn(),
         panTo: vi.fn(),
-        setCenter: vi.fn(),
         setMapTypeId: vi.fn(),
-        fitBounds: vi.fn(),
         getBounds: vi.fn(() => {
             return {
-                getNorthEast: vi.fn(() => event.latLng),
-                getSouthWest: vi.fn(() => event.latLng),
-            };
+                getNorthEast: vi.fn(() => {
+                    return {
+                        lat: vi.fn(() => 3),
+                        lng: vi.fn(() => 3),
+                    }
+                }),
+                getSouthWest: vi.fn(() => {
+                    return {
+                        lat: vi.fn(() => 3),
+                        lng: vi.fn(() => 3),
+                    }
+                })
+            }
         }),
     },
     Marker: {
         ...MVCObject,
         getPosition: vi.fn(() => event.latLng),
         setPosition: vi.fn(),
-        setOpacity: vi.fn(),
     },
     Circle: {
         ...MVCObject,
@@ -242,7 +258,6 @@ const googleMapsObject = {
         setContent: vi.fn(),
         open: vi.fn(),
         close: vi.fn(),
-        setPosition: vi.fn(),
     },
 };
 
