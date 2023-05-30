@@ -39,6 +39,13 @@ const googleMapsClass = {
             this.panTo = vi.fn();
             this.setMapTypeId = vi.fn();
             this.setCenter = vi.fn();
+            this.fitBounds = vi.fn();
+            this.getBounds = vi.fn(() => {
+                return {
+                    getNorthEast: vi.fn(() => event.latLng),
+                    getSouthWest: vi.fn(() => event.latLng),
+                };
+            });
         }
     },
 
@@ -135,8 +142,10 @@ const googleMapsClass = {
         PlacesServiceStatus: { OK: "ok" },
     },
 
-    event: {
-        addListener: vi.fn((instance, eventName, callback) => callback(event))
+    LatLngBounds: class LatLngBounds {
+        constructor() {
+            this.extend = vi.fn();
+        }
     },
 
     Geocoder: class Geocoder {
@@ -148,8 +157,13 @@ const googleMapsClass = {
                             {
                                 types: ['route'],
                                 short_name: 'street name'
-                            }
-                        ]
+                            },
+                            {
+                                types: ['postal_code'],
+                                long_name: 'street name'
+                            },
+                        ],
+                        formatted_address: 'jl. ahmad siddiq'
                     }
                 ])
             })
@@ -176,12 +190,44 @@ const googleMapsClass = {
                             return {
                                 getArray: vi.fn(() => [event.latLng])
                             }
-                        })
+                        }),
+                        ...MVCObject
                     }
                 }))
             }
-        }
-    }
+        },
+        OverlayType: 'POLYGON'
+    },
+    places: {
+        AutocompleteService: class AutocompleteService {
+            constructor() {
+                this.getPlacePredictions = vi.fn((_, callback) => callback([], "ok"));
+            }
+        },
+        PlacesService: class AutocompleteService {
+            constructor() {
+                this.getDetails = vi.fn((_, callback) =>
+                    callback(
+                        {
+                            geometry: {
+                                location: {
+                                    lat: () => 3.0,
+                                    lng: () => 3.0,
+                                },
+                            },
+                        },
+                        "ok"
+                    )
+                );
+            }
+        },
+        PlacesServiceStatus: { OK: "ok" },
+    },
+
+    event: {
+        addListener: vi.fn((_, __, callback) => callback(event)),
+        removeListener: vi.fn(),
+    },
 };
 
 export const googleMaps = () => {
