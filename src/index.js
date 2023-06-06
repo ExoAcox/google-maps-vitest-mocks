@@ -24,6 +24,7 @@ class MVCClass {
                     open: vi.fn(),
                     close: vi.fn(),
                     setContent: vi.fn(),
+                    setPosition: vi.fn(),
                 };
             } else {
                 return "string";
@@ -149,6 +150,7 @@ const googleMapsClass = {
     LatLngBounds: class LatLngBounds {
         constructor() {
             this.extend = vi.fn();
+            this.getCenter = vi.fn();
         }
     },
 
@@ -202,6 +204,7 @@ const googleMapsClass = {
         },
         OverlayType: 'POLYGON'
     },
+
     places: {
         AutocompleteService: class AutocompleteService {
             constructor() {
@@ -254,6 +257,7 @@ const MVCObject = {
                 open: vi.fn(),
                 close: vi.fn(),
                 setContent: vi.fn(),
+                setPosition: vi.fn(),
             };
         } else {
             return "string";
