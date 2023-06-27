@@ -94,15 +94,15 @@ const googleMapsClass = {
     },
 
     LatLng: class LatLng {
-        constructor() { }
+        constructor() {}
     },
 
     Point: class Point {
-        constructor() { }
+        constructor() {}
     },
 
     Size: class Size {
-        constructor() { }
+        constructor() {}
     },
 
     DirectionsService: class DirectionsService {
@@ -116,7 +116,7 @@ const googleMapsClass = {
     DirectionsRenderer: class DirectionsRenderer {
         constructor() {
             this.setMap = vi.fn();
-            this.getMap = vi.fn(() => { });
+            this.getMap = vi.fn(() => {});
             this.setDirections = vi.fn();
         }
     },
@@ -161,18 +161,18 @@ const googleMapsClass = {
                     {
                         address_components: [
                             {
-                                types: ['route'],
-                                short_name: 'street name'
+                                types: ["route"],
+                                short_name: "street name",
                             },
                             {
-                                types: ['postal_code'],
-                                long_name: 'street name'
+                                types: ["postal_code"],
+                                long_name: "street name",
                             },
                         ],
-                        formatted_address: 'jl. ahmad siddiq'
-                    }
-                ])
-            })
+                        formatted_address: "jl. ahmad siddiq",
+                    },
+                ]);
+            });
         }
     },
 
@@ -185,24 +185,26 @@ const googleMapsClass = {
                     draggable: true,
                     strokeWeight: 5,
                     fillOpacity: 0.5,
-                    fillColor: 'red',
-                    strokeColor: 'red',
+                    fillColor: "red",
+                    strokeColor: "red",
                     clickable: true,
-                }
+                };
                 this.setDrawingMode = vi.fn();
-                this.addListener = vi.fn((_, calback) => calback({
-                    overlay: {
-                        getPath: vi.fn(() => {
-                            return {
-                                getArray: vi.fn(() => [event.latLng])
-                            }
-                        }),
-                        ...MVCObject
-                    }
-                }))
+                this.addListener = vi.fn((_, calback) =>
+                    calback({
+                        overlay: {
+                            getPath: vi.fn(() => {
+                                return {
+                                    getArray: vi.fn(() => [event.latLng]),
+                                };
+                            }),
+                            ...MVCObject,
+                        },
+                    })
+                );
             }
         },
-        OverlayType: 'POLYGON'
+        OverlayType: "POLYGON",
     },
 
     places: {
@@ -233,6 +235,7 @@ const googleMapsClass = {
 
     event: {
         addListener: vi.fn((_, __, callback) => callback(event)),
+        addDomListener: vi.fn((_, __, callback) => callback(event)),
         removeListener: vi.fn(),
     },
 };
@@ -280,15 +283,15 @@ const googleMapsObject = {
                     return {
                         lat: vi.fn(() => 3),
                         lng: vi.fn(() => 3),
-                    }
+                    };
                 }),
                 getSouthWest: vi.fn(() => {
                     return {
                         lat: vi.fn(() => 3),
                         lng: vi.fn(() => 3),
-                    }
-                })
-            }
+                    };
+                }),
+            };
         }),
     },
     Marker: {
