@@ -73,6 +73,7 @@ const googleMapsClass = {
         constructor() {
             super();
             this.setPath = vi.fn();
+            this.setPaths = vi.fn();
         }
     },
 
@@ -80,6 +81,7 @@ const googleMapsClass = {
         constructor() {
             super();
             this.setPath = vi.fn();
+            this.setPaths = vi.fn();
         }
     },
 
@@ -308,10 +310,12 @@ const googleMapsObject = {
     Polyline: {
         ...MVCObject,
         setPath: vi.fn(),
+        setPaths: vi.fn(),
     },
     Polygon: {
         ...MVCObject,
         setPath: vi.fn(),
+        setPaths: vi.fn(),
     },
     InfoWindow: {
         ...MVCObject,
